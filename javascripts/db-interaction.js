@@ -9,11 +9,11 @@ let $ = require('jquery'),
 // DB interaction using Firebase REST API
 // ****************************************
 
-function getSongs(callback) {
+function getSongs(user) {
   return new Promise(function(resolve, reject){
     $.ajax({
 // notice the songs.json. This tells firebase what key you want, and what format you need it in!      
-      url: "https://musichistorydemo-7f1ee.firebaseio.com/songs.json"
+      url: `https://musichistorydemo-7f1ee.firebaseio.com/songs.json?orderBy="uid"&equalTo="${user}"`
     }).done(function(songData){
       resolve(songData);
     });

@@ -9,11 +9,11 @@ require("firebase/database");
 
 var config = {
   apiKey: fbData.key,
-  databaseURL: fbData.url,
-  authDomain: fbData.url,
-  storageBucket: fbData.bucketUrl
+  authDomain: fbData.authUrl,
 };
 
-// firebase.initializeApp(config);
+console.log("dbCongig: ", config);
+
+firebase.initializeApp(config);
 
 module.exports = firebase;

@@ -2,13 +2,15 @@
 
 let $ = require('jquery'),
     db = require("./db-interaction"),
-    templates = require("./dom-builder");
-    // login = require("./user");
+    templates = require("./dom-builder"),
+    user = require("./user");
 
 
 // Using the REST API
 function loadSongsToDOM() {
-  db.getSongs()
+  $(".uiContainer--wrapper").html('');
+  let currentUser = user.getUser();
+  db.getSongs(currentUser)
   .then(function(songData){
     var idArr = Object.keys(songData);
     idArr.forEach(function (key) {
@@ -18,7 +20,6 @@ function loadSongsToDOM() {
     templates.makeSongList(songData);
   });
 }
-loadSongsToDOM(); //<--Move to auth section after adding login btn
 
 // Send newSong data to db then reload DOM with updated song data
 $(document).on("click", ".save_new_btn", function() {
@@ -75,7 +76,8 @@ function buildSongObj() {
     title: $("#form--title").val(),
     artist: $("#form--artist").val(),
     album: $("#form--album").val(),
-    year: $("#form--year").val()
+    year: $("#form--year").val(),
+    uid: user.getUser()
   };
   return songObj;
 }
@@ -87,4 +89,25 @@ $("#add-song").click(function() {
   .then(function(songForm) {
     $(".uiContainer--wrapper").html(songForm);
   });
+});
+
+$("#auth-btn").click(function () {
+console.log("i clicked: ", event.target);
+  user.logInGoogle()
+  .then(function (result) {
+    let user = result.user;
+console.log("logged in: ", user.uid);
+    $("#auth-btn").addClass("is-hidden");
+    $("#logout").removeClass("is-hidden");
+    loadSongsToDOM(); //<--Move to auth section after adding login btn
+  });
+});
+
+$("#logout").click(function () {
+console.log("I clicked: ", event.target);
+  user.logOut();
+  $(".uiContainer--wrapper").html('');
+console.log("uiContainer--wrapper: ", $(".uiContainer--wrapper").html());
+  $("#auth-btn").removeClass("is-hidden");
+  $("#logout").addClass("is-hidden");
 });
