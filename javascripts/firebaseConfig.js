@@ -1,19 +1,19 @@
-// "use strict";
+"use strict";
 
-// let firebase = require("firebase/app"),
-//     fb = require("./fb-getter"),
-//     fbData = fb();
+let firebase = require("firebase/app"),
+    fb = require("./fb-getter"),
+    fbData = fb();
 
-// require("firebase/auth");
-// require("firebase/database");
+require("firebase/auth");
+require("firebase/database");
 
-// var config = {
-//   apiKey: fbData.key,
-//   databaseURL: fbData.url,
-//   authDomain: fbData.url,
-//   storageBucket: fbData.bucketUrl
-// };
+var config = {
+  apiKey: fbData.key,
+  authDomain: fbData.authUrl,
+};
 
-// // firebase.initializeApp(config);
+console.log("dbCongig: ", config);
 
-// module.exports = firebase;
+firebase.initializeApp(config);
+
+module.exports = firebase;
